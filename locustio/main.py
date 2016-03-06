@@ -2,15 +2,9 @@ import json
 from locust import HttpLocust, TaskSet, task
 
 class MapiTasks(TaskSet):
-    config = {
-        'auth': ('admin_consumer', 'marqeta')
-    }
-    
     def on_start(self):
-        print self.config
-        response = self.client.post("/v3/users", auth = ('admin_consumer', 'marqeta'))
+        response = self.client.post("/v3/users", json={}, auth=('admin_consumer', 'marqeta'))
         data = json.loads(response.content)
-        print data
         self.token = data['token']
         
     @task
@@ -19,16 +13,11 @@ class MapiTasks(TaskSet):
         
     @task
     def users(self):
-        self.client.get("/v3/users/%(self.token)" % locals(), auth = ('admin_consumer', 'marqeta'))
+        self.client.get("/v3/users", auth=('admin_consumer', 'marqeta'))
         
     @task
-    def authorization(self):
-        body = {
-            'amount': 100,
-            'mid': '12341234',
-            'card_token': 'doge',
-        }
-        self.client.post('/v3/simulate/authorization', auth = ('admin_consumer', 'marqeta'))
+    def more_users(self):
+        self.client.get("/v3/users?count=100", auth=('admin_consumer', 'marqeta'))
         
 class MapiUser(HttpLocust):
     host = "http://local.marqeta.com:8080"
