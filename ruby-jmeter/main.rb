@@ -10,4 +10,4 @@ test do
     get name: 'Users Index',
         url: url('/users')
   end
-end.run(path: '/usr/local/bin/', gui: true)
+end.run
