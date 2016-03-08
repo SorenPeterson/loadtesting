@@ -1,22 +1,42 @@
 import json
+import random
 from locust import HttpLocust, TaskSet, task
+
+class MidGrabber():
+    def __init__(self):
+        self.mids = open('mids.txt').read().split()
+        
+    def get_mid(self):
+        return random.choice(self.mids)
+                
+mid_grabber = MidGrabber()
 
 class MapiTasks(TaskSet):
     def on_start(self):
         response = self.client.post("/users", json={}, auth=('admin_consumer', 'marqeta'), name="Create User")
         data = json.loads(response.content)
         self.user_token = data['token']
-        response = self.client.post("/cards", json={'user_token': self.user_token, 'card_product_token': '86a4e6cf-6102-4895-bdab-d6fe0b18073b'}, auth=('admin_consumer', 'marqeta'))
+        response = self.client.post("/cards", json={
+            'user_token': self.user_token,
+            'card_product_token': '86a4e6cf-6102-4895-bdab-d6fe0b18073b'
+        }, auth=('admin_consumer', 'marqeta'), name="Create Card")
         data = json.loads(response.content)
         self.card_token = data['token']
         
         
     @task
     def authorization(self):
-        response = self.client.post("/simulate/authorization", json={'card_token': self.card_token, 'mid': '123491239158', 'amount': 5.0}, auth=('admin_consumer', 'marqeta'), name="Authorization")
+        response = self.client.post("/simulate/authorization", json={
+            'card_token': self.card_token,
+            'mid': mid_grabber.get_mid(),
+            'amount': 5.0
+        }, auth=('admin_consumer', 'marqeta'), name="Authorization")
         data = json.loads(response.content)
         original_transaction_token = data['transaction']['token']
-        self.client.post("/simulate/clearing", json={'amount': 5.0, 'original_transaction_token': original_transaction_token}, auth=('admin_consumer', 'marqeta'), name="Clearing")
+        self.client.post("/simulate/clearing", json={
+            'amount': 5.0,
+            'original_transaction_token': original_transaction_token
+        }, auth=('admin_consumer', 'marqeta'), name="Clearing")
         
 class MapiUser(HttpLocust):
     host = "http://local.marqeta.com:8080/v3"
