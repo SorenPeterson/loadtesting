@@ -37,7 +37,18 @@ class BasicUserCreation extends Simulation {
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
   object CreateUser {
-    val create_user = exec(http("POST Users")
+    val create_users_forever = forever(
+      exec(http("POST lots of users")
+        // the method and first class endpoint
+        .post("/users")
+        .basicAuth("admin_consumer", "marqeta") // helper! not necessary, but alternative to credz
+        .body(StringBody("""{}"""))
+        .asJSON // helper! not necessary, but defines request body format and dictates required response format
+        .check(status.is(201))
+      ).exec(print(1))
+    )
+    
+    val create_user = exec(http("POST a user")
       // the method and first class endpoint
       .post("/users")
       .basicAuth("admin_consumer", "marqeta") // helper! not necessary, but alternative to credz
@@ -47,11 +58,11 @@ class BasicUserCreation extends Simulation {
     )
   }
 
-  val users = scenario("Users").exec(CreateUser.create_user)
+  val users = scenario("Authorization").exec(CreateUser.create_user, CreateUser.create_users_forever)
 
   setUp(
     users.inject(
-      constantUsersPerSec(20) during(120 seconds)
+      constantUsersPerSec(1) during(120 seconds)
     ).protocols(httpConf)
   )
 }
