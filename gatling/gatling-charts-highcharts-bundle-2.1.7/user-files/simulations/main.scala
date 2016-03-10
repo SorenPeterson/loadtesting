@@ -45,17 +45,20 @@ class BasicUserCreation extends Simulation {
         .body(StringBody("""{}"""))
         .asJSON // helper! not necessary, but defines request body format and dictates required response format
         .check(status.is(201))
-      ).exec(print(1))
+        .check(jsonPath("$.token").saveAs("user_token"))
+      )
     )
     
-    val create_user = exec(http("POST a user")
-      // the method and first class endpoint
-      .post("/users")
-      .basicAuth("admin_consumer", "marqeta") // helper! not necessary, but alternative to credz
-      .body(StringBody("""{}"""))
-      .asJSON // helper! not necessary, but defines request body format and dictates required response format
-      .check(status.is(201))
-    )
+    val create_user = exec((session: Session) => {
+      println(session.get("user_token"))
+      http("POST a user")
+        // the method and first class endpoint
+        .post("/users")
+        .basicAuth("admin_consumer", "marqeta") // helper! not necessary, but alternative to credz
+        .body(StringBody("""{}"""))
+        .asJSON // helper! not necessary, but defines request body format and dictates required response format
+        .check(status.is(201))
+    })
   }
 
   val users = scenario("Authorization").exec(CreateUser.create_user, CreateUser.create_users_forever)
