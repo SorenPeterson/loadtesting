@@ -36,35 +36,26 @@ class BasicUserCreation extends Simulation {
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
-  object CreateUser {
-    val create_users_forever = forever(
-      exec(http("POST lots of users")
-        // the method and first class endpoint
-        .post("/users")
-        .basicAuth("admin_consumer", "marqeta") // helper! not necessary, but alternative to credz
-        .body(StringBody("""{}"""))
-        .asJSON // helper! not necessary, but defines request body format and dictates required response format
-        .check(status.is(201))
-        .check(jsonPath("$.token").saveAs("user_token"))
-      )
-    )
-    
-    val print_user_token = exec((session: Session) =>
-      println(session("user_token"))
-    )
-    
-    val create_user = exec(
-      http("POST a user")
-        // the method and first class endpoint
-        .post("/users")
-        .basicAuth("admin_consumer", "marqeta") // helper! not necessary, but alternative to credz
-        .body(StringBody("""{}"""))
-        .asJSON // helper! not necessary, but defines request body format and dictates required response format
-        .check(status.is(201))
+  object FloodAuthorizations {
+    val authorization = exec(http("POST Users")
+      // the method and first class endpoint
+      .post("/users")
+      .basicAuth("admin_consumer", "marqeta") // helper! not necessary, but alternative to credz
+      .body(StringBody("""{}"""))
+      .asJSON // helper! not necessary, but defines request body format and dictates required response format
+      .check(status.is(201))
+      .check(jsonPath("$.token").saveAs("user_token"))
+    ).exec(http("POST Cards")
+      .post("/cards")
+      .basicAuth("admin_consumer", "marqeta")
+      .body(StringBody("""{'user_token':'${user_token}','card_product_token':'86a4e6cf-6102-4895-bdab-d6fe0b18073b'}"""))
+      .asJSON
+      .check(status.is(201))
+      .check(jsonPath("$.token").saveAs("card_token"))
     )
   }
 
-  val users = scenario("Authorization").exec(CreateUser.create_user, CreateUser.create_users_forever)
+  val users = scenario("Authorization").exec(FloodAuthorizations.authorization)
 
   setUp(
     users.inject(
