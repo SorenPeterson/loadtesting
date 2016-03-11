@@ -6,7 +6,11 @@ var Site = function (url) {
 
 Site.prototype.auth = function (username, password) {
   encoded = 'Basic ' + new Buffer(username + ':' + password)
-  this.headers['Authorization'] = encoded
+  this.headers.Authorization = encoded
+}
+
+Site.prototype.header = function (key, value) {
+  this.headers[key] = value
 }
 
 module.exports = function() {
