@@ -13,5 +13,21 @@ Site.prototype.header = function (key, value) {
   this.headers[key] = value
 }
 
+var Flow = function () {
+}
+
+var TaskFlow = function () {
+  this.taskList = [];
+  this.taskData = {};
+}
+
+TaskFlow.prototype.task = function (title, callback) {
+  if(this.taskData[title] !== undefined) {
+    throw new Error("Duplicate task name was defined. Tasks can't have the same name");
+  }
+  this.taskList.push(title);
+  this.taskData[title] = callback;
+}
+
 module.exports = function() {
 }
