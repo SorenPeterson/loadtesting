@@ -28,19 +28,17 @@ var taskFlow = new TaskFlow().task('Create User', function (flow, site) {
   })
 }).task('Simulate Authorization', function (flow, site) {
   site.post('POST Sim Auth', '/simulate/authorization', {
-    card_token: user.get('card_token'),
+    card_token: flow.data.card_token,
     mid: '1278917923789',
     amount: 5.0
   }, function (response) {
-    flow.data.transaction_token = JSON.parse(response)['token'];
-    flow.repeat();
+    flow.data.transaction_token = JSON.parse(response.body)['token'];
+    flow.goto('Simulate Authorization');
   }, function (err, response) {
     if(JSON.parse(response)['error_message'] === 'Not sufficient funds') {
       flow.goto('Fund User').after(function () {
         flow.goto('Simulate Authorization');
       });
-    } else {
-      flow.goto('Simulate Authorization');
     }
   })
 })

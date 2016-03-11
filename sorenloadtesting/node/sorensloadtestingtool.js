@@ -57,7 +57,7 @@ Site.prototype.post = function (tag, url, body, success, failure) {
   var that = this;
   setTimeout(function () {
     console.log(tag, " done");
-    Math.floor(Math.random() * 2) === 0 ? success({body:'{}'}) : failure('', {body:'{}'});
+    Math.floor(Math.random() * 2) === 0 ? success({body:'{}'}) : success({body:'{}'});
   }, Math.floor(Math.random() * 300));
 };
 
