@@ -2,6 +2,7 @@ var http = require('http');
 
 var Site = function (url) {
   this.url = url;
+  this.headers = {};
 }
 
 Site.prototype.auth = function (username, password) {
