@@ -13,7 +13,13 @@ Site.prototype.header = function (key, value) {
   this.headers[key] = value
 }
 
+Site.prototype.runFlow = function (taskFlow) {
+}
+
 var Flow = function () {
+}
+
+Flow.prototype.next = function () {
 }
 
 var TaskFlow = function () {
@@ -29,5 +35,7 @@ TaskFlow.prototype.task = function (title, callback) {
   this.taskData[title] = callback;
 }
 
-module.exports = function() {
+module.exports = {
+  TaskFlow: TaskFlow,
+  Site: Site
 }
