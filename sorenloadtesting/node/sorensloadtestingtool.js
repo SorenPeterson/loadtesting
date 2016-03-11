@@ -1,5 +1,19 @@
 var http = require('http');
 
+var Request = function (callback) {
+  callback.bind(this)();
+  this.success = function () {};
+  this.failure = function () {};
+}
+
+Request.prototype.success = function (callback) {
+  this.success = callback;
+}
+
+Request.prototype.failure = function (callback) {
+  this.failure = callback;
+}
+
 var Site = function (url) {
   this.url = url;
   this.headers = {};
@@ -19,15 +33,11 @@ Site.prototype.startFlow = function (taskFlow) {
   taskFlow.goto(taskFlow.firstTask);
 }
 
-Site.prototype.get = function (endpoint) {
+Site.prototype.get = (new Request(function () {
   setTimeout(function () {
+    Math.floor(Math.random() * 2) ? this.success() : this.failure();
   }, Math.floor(Math.random() * 300);
-}
-
-Site.prototype.post = function (endpoint, body) {
-  setTimeout(function () {
-  }, Math.floor(Math.random() * 300);
-}
+})).call;
 
 var TaskFlow = function () {
   this.taskData = {};
