@@ -15,7 +15,7 @@ Site.prototype.header = function (key, value) {
   this.headers[key] = value
 }
 
-Site.prototype.runFlow = function (taskFlow) {
+Site.prototype.startFlow = function (taskFlow) {
 }
 
 var Flow = function () {
@@ -36,9 +36,6 @@ TaskFlow.prototype.task = function (title, callback) {
   this.taskList.push(title);
   this.taskData[title] = callback;
   return this;
-}
-
-TaskFlow.prototype.startFlow = function (taskFlow) {
 }
 
 module.exports = {

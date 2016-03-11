@@ -52,6 +52,5 @@ var taskFlow = new TaskFlow().task('Create User', function (user, flow, request)
 })
 
 for (var i = 0; i < 100; i++) {
-  console.log(site);
   site.startFlow(taskFlow);
 }
