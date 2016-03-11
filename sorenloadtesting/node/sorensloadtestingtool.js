@@ -4,7 +4,6 @@ var Request = function (callback) {
   this.callback = callback.bind(this);
   this.success = function () {};
   this.failure = function () {};
-  console.log(this);
 }
 
 Request.prototype.success = function (callback) {
@@ -40,21 +39,19 @@ Site.prototype.startFlow = function (taskFlow) {
   taskFlow.goto(taskFlow.firstTask);
 }
 
-Site.prototype.get = (new Request(function () {
+Site.prototype.get = function (url, body, success, failure) {
   var that = this;
   setTimeout(function () {
-    console.log(that);
-    Math.floor(Math.random() * 2) ? that.success() : that.failure();
+    Math.floor(Math.random() * 2) ? success({body:'{}'}) : failure('', {body:'{}'});
   }, Math.floor(Math.random() * 300));
-})).call;
+};
 
-Site.prototype.post = (new Request(function () {
+Site.prototype.post = function (url, body, success, failure) {
   var that = this;
   setTimeout(function () {
-    console.log(that);
-    Math.floor(Math.random() * 2) ? that.success() : that.failure();
+    Math.floor(Math.random() * 2) ? success({body:'{}'}) : failure('', {body:'{}'});
   }, Math.floor(Math.random() * 300));
-})).call;
+};
 
 var TaskFlow = function () {
   this.taskData = {};
