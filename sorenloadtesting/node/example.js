@@ -8,7 +8,7 @@ var site = new Site('http://local.marqeta.com/v3').auth('admin_consumer', 'marqe
 var taskFlow = new TaskFlow().task('Create User', function (user, flow, request) {
     request.post('POST Users', '/users', {/*empty body*/}).success(function (response) {
         user.set('user_token', JSON.parse(response.body)['token']);
-        flow.next();
+        flow.goto('Fund User');
     }).failure(function (err, response) {
       flow.exit();
     });
@@ -18,7 +18,7 @@ var taskFlow = new TaskFlow().task('Create User', function (user, flow, request)
     amount: 10000000,
     currency_code: 'USD'
   }).success(function (response) {
-    flow.next();
+    flow.goto('Create Card');
   }).failure(function (err, response) {
     flow.exit();
   });
@@ -28,7 +28,7 @@ var taskFlow = new TaskFlow().task('Create User', function (user, flow, request)
     card_product_token: '86a4e6cf-6102-4895-bdab-d6fe0b18073b'
   }).success(function (response) {
     user.set('card_token', JSON.parse(response.body)['token']);
-    flow.next();
+    flow.goto('Simulate Authorization');
   }).failure(function (err, response) {
     flow.exit();
   });
