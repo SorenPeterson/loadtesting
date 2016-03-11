@@ -3,10 +3,9 @@ var loadtesting = require('./sorensloadtestingtool.js')
 var Site = loadtesting.Site;
 var TaskFlow = loadtesting.TaskFlow;
 
-console.log(loadtesting);
 var site = new Site('http://local.marqeta.com/v3').auth('admin_consumer', 'marqeta')
 
-var task_flow = new TaskFlow().task('Create User', function (user, flow, request) {
+var taskFlow = new TaskFlow().task('Create User', function (user, flow, request) {
     request.post('POST Users', '/users', {/*empty body*/}).success(function (response) {
         user.set('user_token', JSON.parse(response.body)['token']);
         flow.next();
@@ -53,5 +52,6 @@ var task_flow = new TaskFlow().task('Create User', function (user, flow, request
 })
 
 for (var i = 0; i < 100; i++) {
-  site.startFlow(task_flow);
+  console.log(site);
+  site.startFlow(taskFlow);
 }

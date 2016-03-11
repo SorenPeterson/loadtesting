@@ -8,6 +8,7 @@ var Site = function (url) {
 Site.prototype.auth = function (username, password) {
   encoded = 'Basic ' + new Buffer(username + ':' + password)
   this.headers.Authorization = encoded
+  return this;
 }
 
 Site.prototype.header = function (key, value) {
@@ -35,6 +36,9 @@ TaskFlow.prototype.task = function (title, callback) {
   this.taskList.push(title);
   this.taskData[title] = callback;
   return this;
+}
+
+TaskFlow.prototype.startFlow = function (taskFlow) {
 }
 
 module.exports = {
