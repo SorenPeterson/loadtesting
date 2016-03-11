@@ -34,6 +34,7 @@ TaskFlow.prototype.task = function (title, callback) {
   }
   this.taskList.push(title);
   this.taskData[title] = callback;
+  return this;
 }
 
 module.exports = {
