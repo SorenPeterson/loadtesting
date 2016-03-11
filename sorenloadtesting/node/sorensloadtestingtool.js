@@ -1,9 +1,10 @@
 var http = require('http');
 
 var Request = function (callback) {
-  callback.bind(this)();
+  this.callback = callback.bind(this);
   this.success = function () {};
   this.failure = function () {};
+  console.log(this);
 }
 
 Request.prototype.success = function (callback) {
@@ -12,6 +13,11 @@ Request.prototype.success = function (callback) {
 
 Request.prototype.failure = function (callback) {
   this.failure = callback;
+}
+
+Request.prototype.call = function () {
+  console.log(this);
+  this.callback(arguments)
 }
 
 var Site = function (url) {
@@ -30,13 +36,24 @@ Site.prototype.header = function (key, value) {
 }
 
 Site.prototype.startFlow = function (taskFlow) {
+  taskFlow.site = this;
   taskFlow.goto(taskFlow.firstTask);
 }
 
 Site.prototype.get = (new Request(function () {
+  var that = this;
   setTimeout(function () {
-    Math.floor(Math.random() * 2) ? this.success() : this.failure();
-  }, Math.floor(Math.random() * 300);
+    console.log(that);
+    Math.floor(Math.random() * 2) ? that.success() : that.failure();
+  }, Math.floor(Math.random() * 300));
+})).call;
+
+Site.prototype.post = (new Request(function () {
+  var that = this;
+  setTimeout(function () {
+    console.log(that);
+    Math.floor(Math.random() * 2) ? that.success() : that.failure();
+  }, Math.floor(Math.random() * 300));
 })).call;
 
 var TaskFlow = function () {
@@ -56,8 +73,9 @@ TaskFlow.prototype.task = function (title, callback) {
 }
 
 TaskFlow.prototype.goto = function (title) {
+  var that = this;
   setTimeout(function () {
-    this.taskData[title](this, Request);
+    that.taskData[title](that, that.site);
   }, 1000);
 }
 
