@@ -39,17 +39,25 @@ Site.prototype.startFlow = function (taskFlow) {
   taskFlow.goto(taskFlow.firstTask);
 }
 
-Site.prototype.get = function (url, body, success, failure) {
+Site.prototype.get = function (tag, url, body, success, failure) {
+  console.log(tag);
+  success = success || function(){};
+  failure = failure || function(){};
   var that = this;
   setTimeout(function () {
+    console.log(tag, " done");
     Math.floor(Math.random() * 2) ? success({body:'{}'}) : failure('', {body:'{}'});
   }, Math.floor(Math.random() * 300));
 };
 
-Site.prototype.post = function (url, body, success, failure) {
+Site.prototype.post = function (tag, url, body, success, failure) {
+  console.log(tag);
+  success = success || function(){};
+  failure = failure || function(){};
   var that = this;
   setTimeout(function () {
-    Math.floor(Math.random() * 2) ? success({body:'{}'}) : failure('', {body:'{}'});
+    console.log(tag, " done");
+    Math.floor(Math.random() * 2) === 0 ? success({body:'{}'}) : failure('', {body:'{}'});
   }, Math.floor(Math.random() * 300));
 };
 

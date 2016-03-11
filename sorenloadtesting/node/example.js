@@ -10,7 +10,7 @@ var taskFlow = new TaskFlow().task('Create User', function (flow, site) {
         flow.data.user_token = JSON.parse(response.body)['token'];
         flow.goto('Fund User');
     })
-}).task('Fund User', function (flow, request) {
+}).task('Fund User', function (flow, site) {
   site.post('POST Gpa Orders', '/gpaorders', {
     user_token: flow.data.user_token,
     amount: 10000000,
@@ -18,7 +18,7 @@ var taskFlow = new TaskFlow().task('Create User', function (flow, site) {
   }, function (response) {
     flow.goto('Create Card');
   })
-}).task('Create Card', function (flow, request) {
+}).task('Create Card', function (flow, site) {
   site.post('POST Cards', '/cards', {
     user_token: flow.data.user_token,
     card_product_token: '86a4e6cf-6102-4895-bdab-d6fe0b18073b'
@@ -26,7 +26,7 @@ var taskFlow = new TaskFlow().task('Create User', function (flow, site) {
     flow.data.card_token = JSON.parse(response.body)['token'];
     flow.goto('Simulate Authorization');
   })
-}).task('Simulate Authorization', function (flow, request) {
+}).task('Simulate Authorization', function (flow, site) {
   site.post('POST Sim Auth', '/simulate/authorization', {
     card_token: user.get('card_token'),
     mid: '1278917923789',
