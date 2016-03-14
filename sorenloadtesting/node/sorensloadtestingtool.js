@@ -20,27 +20,31 @@ Request.prototype.call = function () {
 }
 
 var Site = function (url) {
-  this.url = url;
-  this.headers = {};
+  this.HTTPOptions = {};
+  this.HTTPOptions.baseUrl = url;
+  this.HTTPOptions.headers = {};
 }
 
 Site.taskFlows = {};
 
 Site.prototype.auth = function (username, password) {
   encoded = 'Basic ' + new Buffer(username + ':' + password)
-  this.headers.Authorization = encoded
+  this.HTTPOptions.headers.Authorization = encoded
   return this;
 }
 
 Site.prototype.header = function (key, value) {
-  this.headers[key] = value;
+  this.HTTPOptions.headers[key] = value;
 }
 
-Site.prototype.get = function (tag, url, success, failure) {
+Site.prototype.get = function (tag, uri, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
+  this.HTTPOptions.uri = uri;
+  this.HTTPOptions.url = uri;
   var that = this;
-  request.get(this.url + url, function (error, response) {
+  console.log(this.HTTPOptions);
+  request.get(this.HTTPOptions, function (error, response, body) {
     if(error) {
       failure(error, response);
     } else {
@@ -49,11 +53,14 @@ Site.prototype.get = function (tag, url, success, failure) {
   });
 };
 
-Site.prototype.post = function (tag, url, body, success, failure) {
+Site.prototype.post = function (tag, uri, body, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
+  this.HTTPOptions.uri = uri;
+  this.HTTPOptions.url = uri;
   var that = this;
-  request.post(this.url + url, body, function (error, response) {
+  console.log('doge', this.HTTPOptions);
+  request.post(this.HTTPOptions, function (error, response, body) {
     if(error) {
       failure(error, response);
     } else {
