@@ -67,18 +67,16 @@ Site.prototype.registerTaskFlow = function(name, fn) {
   if(Site.taskFlows[name] !== undefined) {
     throw new Error("Duplicate task flow name was defined. TaskFlows can't have the same name.");
   }
-  Site.taskFlows[name] = new TaskFlow();
+  Site.taskFlows[name] = new TaskFlow(this);
 };
 
-var TaskFlow = function () {
+var TaskFlow = function (site) {
   this.taskData = {};
   this.data = {};
+  this.site = site;
 }
 
-TaskFlow.prototype.task = function (title, callback) {
-  if(this.firstTask === undefined) {
-    this.firstTask = title;
-  }
+TaskFlow.prototype.registerTask = function (title, callback) {
   if(this.taskData[title] !== undefined) {
     throw new Error("Duplicate task name was defined. Tasks can't have the same name");
   }
@@ -93,7 +91,4 @@ TaskFlow.prototype.goto = function (title) {
   }, 1000);
 }
 
-module.exports = {
-  TaskFlow: TaskFlow,
-  Site: Site
-}
+module.exports = Site

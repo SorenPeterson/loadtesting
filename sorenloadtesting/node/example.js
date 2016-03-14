@@ -1,7 +1,5 @@
 'use strict';
-var loadtesting = require('./sorensloadtestingtool.js');
-var Site = loadtesting.Site;
-var TaskFlow = loadtesting.TaskFlow;
+var Site = require('./sorensloadtestingtool.js');
 
 var site = new Site('http://local.marqeta.com/v3').auth('admin_consumer', 'marqeta')
 
