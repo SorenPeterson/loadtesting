@@ -24,6 +24,8 @@ var Site = function (url) {
   this.headers = {};
 }
 
+Site.taskFlows = {};
+
 Site.prototype.auth = function (username, password) {
   encoded = 'Basic ' + new Buffer(username + ':' + password)
   this.headers.Authorization = encoded
@@ -59,6 +61,13 @@ Site.prototype.post = function (tag, url, body, success, failure) {
     console.log(tag, " done");
     Math.floor(Math.random() * 2) === 0 ? success({body:'{}'}) : success({body:'{}'});
   }, Math.floor(Math.random() * 300));
+};
+
+Site.prototype.registerTaskFlow = function(name, fn) {
+  if(Site.taskFlows[name] !== undefined) {
+    throw new Error("Duplicate task flow name was defined. TaskFlows can't have the same name.");
+  }
+  Site.taskFlows[name] = new TaskFlow();
 };
 
 var TaskFlow = function () {
