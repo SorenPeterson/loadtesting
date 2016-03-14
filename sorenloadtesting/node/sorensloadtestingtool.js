@@ -36,11 +36,6 @@ Site.prototype.header = function (key, value) {
   this.headers[key] = value;
 }
 
-Site.prototype.startFlow = function (taskFlow) {
-  taskFlow.site = this;
-  taskFlow.goto(taskFlow.firstTask);
-}
-
 Site.prototype.get = function (tag, url, body, success, failure) {
   console.log(tag);
   success = success || function(){};
@@ -67,7 +62,7 @@ Site.prototype.registerTaskFlow = function(name, fn) {
   if(Site.taskFlows[name] !== undefined) {
     throw new Error("Duplicate task flow name was defined. TaskFlows can't have the same name.");
   }
-  Site.taskFlows[name] = new TaskFlow(this);
+  return Site.taskFlows[name] = new TaskFlow(this);
 };
 
 var TaskFlow = function (site) {
@@ -84,11 +79,17 @@ TaskFlow.prototype.registerTask = function (title, callback) {
   return this;
 }
 
-TaskFlow.prototype.goto = function (title) {
+TaskFlow.prototype.startFlow = function (entryPoint) {
+  var state = {};
   var that = this;
-  setTimeout(function () {
-    that.taskData[title](that, that.site);
-  }, 1000);
+  
+  var goto = function (title) {
+    setTimeout(function () {
+      that.taskData[title](goto, that.site, state);
+    }, 0);
+  }
+  
+  goto(entryPoint);
 }
 
 module.exports = Site
