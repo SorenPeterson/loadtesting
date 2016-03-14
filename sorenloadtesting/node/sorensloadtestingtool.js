@@ -40,18 +40,26 @@ Site.prototype.get = function (tag, url, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
   var that = this;
-  setTimeout(function () {
-    success({body:'{}'});
-  }, Math.floor(Math.random() * 300));
+  request.get(this.url + url, function (error, response) {
+    if(error) {
+      failure(error, response);
+    } else {
+      success(response);
+    }
+  });
 };
 
 Site.prototype.post = function (tag, url, body, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
   var that = this;
-  setTimeout(function () {
-    success({body:'{}'});
-  }, Math.floor(Math.random() * 300));
+  request.post(this.url + url, body, function (error, response) {
+    if(error) {
+      failure(error, response);
+    } else {
+      success(response);
+    }
+  });
 };
 
 Site.prototype.registerTaskFlow = function(name, fn) {
