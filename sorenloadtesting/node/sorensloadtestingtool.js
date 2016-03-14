@@ -80,6 +80,9 @@ TaskFlow.prototype.startFlow = function (entryPoint) {
   var that = this;
   
   var goto = function (title) {
+    if(typeof that.taskData[title] !== 'function') {
+      throw new Error('It appears as if you have not registered a task named ' + title);
+    }
     setTimeout(function () {
       that.taskData[title](goto, that.site, state);
     }, 0);
