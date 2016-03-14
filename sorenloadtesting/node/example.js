@@ -1,4 +1,3 @@
-'use strict';
 var Site = require('./sorensloadtestingtool.js');
 
 var site = new Site('http://local.marqeta.com/v3').auth('admin_consumer', 'marqeta')

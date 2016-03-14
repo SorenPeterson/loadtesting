@@ -1,4 +1,4 @@
-var http = require('http');
+var request = require('request');
 
 var Request = function (callback) {
   this.callback = callback.bind(this);
@@ -36,15 +36,13 @@ Site.prototype.header = function (key, value) {
   this.headers[key] = value;
 }
 
-Site.prototype.get = function (tag, url, body, success, failure) {
-  console.log(tag);
+Site.prototype.get = function (tag, url, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
   var that = this;
-  setTimeout(function () {
-    console.log(tag, " done");
-    Math.floor(Math.random() * 2) ? success({body:'{}'}) : failure('', {body:'{}'});
-  }, Math.floor(Math.random() * 300));
+  // setTimeout(function () t {
+  //   success({body:'{}'});
+  // }, Math.floor(Math.random() * 300));
 };
 
 Site.prototype.post = function (tag, url, body, success, failure) {
@@ -53,8 +51,7 @@ Site.prototype.post = function (tag, url, body, success, failure) {
   failure = failure || function(){};
   var that = this;
   setTimeout(function () {
-    console.log(tag, " done");
-    Math.floor(Math.random() * 2) === 0 ? success({body:'{}'}) : success({body:'{}'});
+    success({body:'{}'});
   }, Math.floor(Math.random() * 300));
 };
 
