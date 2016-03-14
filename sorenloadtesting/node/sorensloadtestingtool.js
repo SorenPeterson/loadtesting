@@ -40,13 +40,12 @@ Site.prototype.get = function (tag, url, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
   var that = this;
-  // setTimeout(function () t {
-  //   success({body:'{}'});
-  // }, Math.floor(Math.random() * 300));
+  setTimeout(function () {
+    success({body:'{}'});
+  }, Math.floor(Math.random() * 300));
 };
 
 Site.prototype.post = function (tag, url, body, success, failure) {
-  console.log(tag);
   success = success || function(){};
   failure = failure || function(){};
   var that = this;
