@@ -23,4 +23,4 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
   });
 });
 
-createUserAndGet.startFlow('Create User');
+createUserAndGet.startAtTask('Create User');

@@ -90,7 +90,7 @@ TaskFlow.prototype.registerTask = function (title, callback) {
   return this;
 }
 
-TaskFlow.prototype.startFlow = function (entryPoint) {
+TaskFlow.prototype.startAtTask = function (entryPoint) {
   var state = {};
   var that = this;
   
