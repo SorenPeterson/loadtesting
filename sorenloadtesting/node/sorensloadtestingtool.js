@@ -94,13 +94,13 @@ TaskFlow.prototype.startAtTask = function (entryPoint) {
   var state = {};
   var that = this;
   
-  var goto = function (title) {
+  var goto = function (title, timeout) {
     if(typeof that.taskData[title] !== 'function') {
       throw new Error('It appears as if you have not registered a task named ' + title);
     }
     setTimeout(function () {
       that.taskData[title](goto, that.site, state);
-    }, 0);
+    }, timeout || 0);
   }
   
   goto(entryPoint);

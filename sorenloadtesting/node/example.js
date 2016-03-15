@@ -16,7 +16,7 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
 }).registerTask('Get Users', function (goto, site, state) {
   site.get('GET Users', '/users', function (response) {
     console.log(state.doge);
-    goto('Get Users');
+    goto('Get Users', 100);
     console.log(response);
   }, function (error, response) {
     console.log(error, response);
