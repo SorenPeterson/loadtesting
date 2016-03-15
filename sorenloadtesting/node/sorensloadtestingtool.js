@@ -37,7 +37,7 @@ Site.prototype.get = function (tag, uri, success, failure) {
 Site.prototype.post = function (tag, uri, body, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
-  this.HTTPOptions.body = JSON.stringify(body);
+  this.HTTPOptions.body = body;
   var that = this;
   request.post(uri, this.HTTPOptions, function (error, response, body) {
     if(error || response.statusCode >= 300 || response.statusCode < 200) {
