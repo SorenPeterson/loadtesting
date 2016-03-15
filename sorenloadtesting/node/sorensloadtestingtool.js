@@ -1,23 +1,5 @@
 var request = require('request');
 
-var Request = function (callback) {
-  this.callback = callback.bind(this);
-  this.success = function () {};
-  this.failure = function () {};
-}
-
-Request.prototype.success = function (callback) {
-  this.success = callback;
-}
-
-Request.prototype.failure = function (callback) {
-  this.failure = callback;
-}
-
-Request.prototype.call = function () {
-  this.callback(arguments)
-}
-
 var Site = function (url) {
   this.HTTPOptions = {};
   this.HTTPOptions.baseUrl = url;
