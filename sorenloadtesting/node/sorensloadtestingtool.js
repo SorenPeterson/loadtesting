@@ -21,14 +21,12 @@ Site.prototype.header = function (key, value) {
 Site.prototype.get = function (tag, uri, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
-  this.HTTPOptions.uri = uri;
-  this.HTTPOptions.url = uri;
   var that = this;
-  request.get(this.HTTPOptions, function (error, response, body) {
-    if(error) {
-      failure(error, response);
+  request.get(uri, this.HTTPOptions, function (error, response, body) {
+    if(error || response.statusCode >= 300 || response.statusCode < 200) {
+      failure(error, response, body);
     } else {
-      success(response);
+      success(response, body);
     }
   });
 };
@@ -36,14 +34,13 @@ Site.prototype.get = function (tag, uri, success, failure) {
 Site.prototype.post = function (tag, uri, body, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
-  this.HTTPOptions.uri = uri;
-  this.HTTPOptions.url = uri;
+  this.HTTPOptions.body = JSON.stringify(body);
   var that = this;
-  request.post(this.HTTPOptions, function (error, response, body) {
-    if(error) {
-      failure(error, response);
+  request.post(uri, this.HTTPOptions, function (error, response, body) {
+    if(error || response.statusCode >= 300 || response.statusCode < 200) {
+      failure(error, response, body);
     } else {
-      success(response);
+      success(response, body);
     }
   });
 };
