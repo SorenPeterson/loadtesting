@@ -1,5 +1,7 @@
 var request = require('request');
 
+var stats = {};
+
 var Site = function (url) {
   this.HTTPOptions = {};
   this.HTTPOptions.baseUrl = url;
@@ -25,8 +27,12 @@ Site.prototype.get = function (tag, uri, success, failure) {
   success = success || function(){};
   failure = failure || function(){};
   var that = this;
+  stats[tag] = stats[tag] || [];
+  var place = stats[tag].push({start: Date.now()});
   request.get(uri, this.HTTPOptions, function (error, response, body) {
+    state[tag][place].end = Date.now();
     if(error || response.statusCode >= 300 || response.statusCode < 200) {
+      state[tag][place].failed = true;
       failure(error, response, body);
     } else {
       success(response, body);
@@ -39,8 +45,12 @@ Site.prototype.post = function (tag, uri, body, success, failure) {
   failure = failure || function(){};
   this.HTTPOptions.body = body;
   var that = this;
+  stats[tag] = stats[tag] || [];
+  var place = stats[tag].push({start: Date.now()});
   request.post(uri, this.HTTPOptions, function (error, response, body) {
+    state[tag][place].end = Date.now();
     if(error || response.statusCode >= 300 || response.statusCode < 200) {
+      state[tag][place].failed = true;
       failure(error, response, body);
     } else {
       success(response, body);
