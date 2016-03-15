@@ -2,7 +2,7 @@ var Site = require('./sorensloadtestingtool.js');
 
 var site = new Site('http://local.marqeta.com:8080/v3').auth('admin_consumer', 'marqeta')
 
-var createUserAndGet = site.registerTaskFlow('Create and Get User');
+var createUserAndGet = site.createTaskFlow('Create and Get User');
 
 createUserAndGet.registerTask('Create User', function (goto, site, state) {
   site.post('POST Users', '/users', {/*empty body*/}, function (response, body) {

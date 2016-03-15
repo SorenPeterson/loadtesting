@@ -18,6 +18,7 @@ Site.prototype.auth = function (username, password) {
 
 Site.prototype.header = function (key, value) {
   this.HTTPOptions.headers[key] = value;
+  return this;
 }
 
 Site.prototype.get = function (tag, uri, success, failure) {
@@ -47,7 +48,7 @@ Site.prototype.post = function (tag, uri, body, success, failure) {
   });
 };
 
-Site.prototype.registerTaskFlow = function(name, fn) {
+Site.prototype.createTaskFlow = function(name, fn) {
   if(Site.taskFlows[name] !== undefined) {
     throw new Error("Duplicate task flow name was defined. TaskFlows can't have the same name.");
   }
