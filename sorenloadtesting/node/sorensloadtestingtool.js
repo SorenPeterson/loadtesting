@@ -15,7 +15,6 @@ Request.prototype.failure = function (callback) {
 }
 
 Request.prototype.call = function () {
-  console.log(this);
   this.callback(arguments)
 }
 
@@ -43,7 +42,6 @@ Site.prototype.get = function (tag, uri, success, failure) {
   this.HTTPOptions.uri = uri;
   this.HTTPOptions.url = uri;
   var that = this;
-  console.log(this.HTTPOptions);
   request.get(this.HTTPOptions, function (error, response, body) {
     if(error) {
       failure(error, response);
@@ -59,7 +57,6 @@ Site.prototype.post = function (tag, uri, body, success, failure) {
   this.HTTPOptions.uri = uri;
   this.HTTPOptions.url = uri;
   var that = this;
-  console.log('doge', this.HTTPOptions);
   request.post(this.HTTPOptions, function (error, response, body) {
     if(error) {
       failure(error, response);
