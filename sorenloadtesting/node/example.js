@@ -34,11 +34,13 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
     console.log('got users');
     // Notice here that goto can take an optional second which allows you to "pause" before executing the next Task. Note that the pause is NONBLOCKING because it utilizes the setTimeout function.
     goto('Get Users', 100);
+  }, function (error, response, body) {
+    console.log(error, response, body);
   });
-  // Note how the failure call back is not required. In fact, neither is the success callback. If you do not provide any callbacks, and never calling goto, the flow will just stop and the automatic garbage collection will clean up after you.
+  // Note that the failure call back is not required. In fact, neither is the success callback. If you do not provide any callbacks, and never call goto, the flow will just stop and the automatic garbage collection will clean up after you.
 });
 
 // To create an instance of a task flow, call startAtTask and pass the tag of the task that you would like to start at.
-for(var i = 0; i < 1000; i++) {
+for(var i = 0; i < 100; i++) {
   createUserAndGet.startAtTask('Create User');
 }
