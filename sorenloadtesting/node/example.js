@@ -41,6 +41,4 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
 });
 
 // To create an instance of a task flow, call startAtTask and pass the tag of the task that you would like to start at.
-for(var i = 0; i < 100; i++) {
   createUserAndGet.startAtTask('Create User');
-}
