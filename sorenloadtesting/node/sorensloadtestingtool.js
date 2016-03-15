@@ -9,8 +9,10 @@ var Site = function (url) {
 Site.taskFlows = {};
 
 Site.prototype.auth = function (username, password) {
-  encoded = 'Basic ' + new Buffer(username + ':' + password)
-  this.HTTPOptions.headers.Authorization = encoded
+  this.HTTPOptions.auth = {
+    user: username,
+    pass: password
+  }
   return this;
 }
 
