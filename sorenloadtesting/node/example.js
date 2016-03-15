@@ -16,7 +16,7 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
   var tag = 'POST Users';
   var endpoint = '/users';
   var body = JSON.stringify({/*empty body*/});
-  var success = function (response, body) {}
+  var success = function (response, body) {
     state.user_token = JSON.parse(body)['token'];
     console.log('created user');
     // Pass a task identifier to go to that task next
