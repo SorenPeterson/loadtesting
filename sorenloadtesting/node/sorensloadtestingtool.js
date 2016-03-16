@@ -25,10 +25,7 @@ Site.prototype.request = function (tag, uri, options, callback) {
   var start = new Date();
   var mergedOptions = Object.assign({}, this.HTTPOptions);
   Object.assign(mergedOptions, options);
-  console.log(tag, 'start');
-  console.log(mergedOptions);
   request(uri, mergedOptions, function (error, response, body) {
-    console.log(tag, 'end');
     var responseTime = new Date() - start;
     callback(error, response, body);
   })
