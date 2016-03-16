@@ -40,8 +40,7 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
   }, function (error, response, body) {
     if(!error) {
       console.log('got users');
-      // Notice here that goto can take an optional second which allows you to "pause" before executing the next Task. Note that the pause is NONBLOCKING because it utilizes the setTimeout function.
-      goto('Get Users', 100);
+      goto('Get Users');
     } else {
       console.log(error, response, body);
     }
