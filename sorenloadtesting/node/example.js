@@ -36,7 +36,8 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
 }).registerTask('Get Users', function (goto, site, state) {
   // Arguments: tag, endpoint, success callback, failure callback
   site.request('GET Users', '/users', {
-    method: 'GET'
+    method: 'GET',
+    json: true
   }, function (error, response, body) {
     if(!error) {
       console.log('got users');

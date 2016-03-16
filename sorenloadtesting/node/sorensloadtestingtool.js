@@ -57,6 +57,7 @@ TaskFlow.prototype.startAtTask = function (entryPoint) {
   var that = this;
   
   var goto = function (title, timeout) {
+    console.log('added ', title, ' to stack');
     if(typeof that.taskData[title] !== 'function') {
       throw new Error('It appears as if you have not registered a task named ' + title);
     }
