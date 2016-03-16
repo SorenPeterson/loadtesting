@@ -21,32 +21,15 @@ Site.prototype.header = function (key, value) {
   return this;
 }
 
-Site.prototype.get = function (tag, uri, success, failure) {
-  success = success || function(){};
-  failure = failure || function(){};
-  var that = this;
-  request.get(uri, this.HTTPOptions, function (error, response, body) {
-    if(error || response.statusCode >= 300 || response.statusCode < 200) {
-      failure(error, response, body);
-    } else {
-      success(response, body);
-    }
-  });
-};
-
-Site.prototype.post = function (tag, uri, body, success, failure) {
-  success = success || function(){};
-  failure = failure || function(){};
-  this.HTTPOptions.body = body;
-  var that = this;
-  request.post(uri, this.HTTPOptions, function (error, response, body) {
-    if(error || response.statusCode >= 300 || response.statusCode < 200) {
-      failure(error, response, body);
-    } else {
-      success(response, body);
-    }
-  });
-};
+Site.prototype.request = function (tag, uri, options, callback) {
+  var start = new Date();
+  var mergedOptions = Object.assign({}, this.HTTPOptions);
+  Object.assign(mergedOptions, options);
+  request(uri, mergedOptions, function (error, response, body) {
+    var responseTime = new Date() - start;
+    callback(error, response, body);
+  })
+}
 
 Site.prototype.createTaskFlow = function(name, fn) {
   if(Site.taskFlows[name] !== undefined) {
