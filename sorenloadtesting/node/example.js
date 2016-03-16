@@ -22,7 +22,7 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
   }
   var callback = function (error, response, body) {
     if(!error) {
-      state.user_token = JSON.parse(body)['token'];
+      state.user_token = body.token;
       console.log('created user');
       // Pass a task identifier to go to that task next
       // Since we now have a user token stored in our emulated users state, we can go to the Get Users task to grab that user
@@ -36,6 +36,7 @@ createUserAndGet.registerTask('Create User', function (goto, site, state) {
 }).registerTask('Get Users', function (goto, site, state) {
   // Arguments: tag, endpoint, success callback, failure callback
   site.request('GET Users', '/users', {
+    method: 'GET'
   }, function (error, response, body) {
     if(!error) {
       console.log('got users');
